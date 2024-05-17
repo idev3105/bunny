@@ -1,0 +1,22 @@
+package tokenutil_test
+
+import (
+	"context"
+	"testing"
+
+	tokenutil "org.idev.bunny/backend/common/util/token"
+)
+
+func TestVerify(t *testing.T) {
+	ctx := context.TODO()
+	// Replace new token to test
+	tokenRaw := "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ2Mk5fQ1J1M0J0Q2hfYkZzNGVkbXVZODRWY2R6NDhhYlpTVTVQdm9wVTlnIn0.eyJleHAiOjE3MTM4OTA2ODksImlhdCI6MTcxMzg5MDYyOSwiYXV0aF90aW1lIjoxNzEzODkwNjI5LCJqdGkiOiIwZWRhYzY4My1kNWQwLTRlMzMtOTMyNy02NDc3NDY5NTMzMjUiLCJpc3MiOiJodHRwOi8vMC4wLjAuMDo4MDgwL2F1dGgvcmVhbG1zL21hc3RlciIsImF1ZCI6InNlY3VyaXR5LWFkbWluLWNvbnNvbGUiLCJzdWIiOiJhOWE5N2ViZC1lNDk0LTQ0NzctOTgzNC1lNWQzNTkzNGI1NWMiLCJ0eXAiOiJJRCIsImF6cCI6InNlY3VyaXR5LWFkbWluLWNvbnNvbGUiLCJub25jZSI6ImFjMmJhMTI0LTA1ZDAtNDAxOC05ZmQxLWJkMTg1MTdmODQ5MSIsInNlc3Npb25fc3RhdGUiOiJjOTYzOTg4OS0xYTFkLTRmY2UtOTNkNC04ZmRjYWEzYTZlMzAiLCJhdF9oYXNoIjoiakJXR2xqaUNsZGpjZU9yUG5WcDZaZyIsImFjciI6IjEiLCJzaWQiOiJjOTYzOTg4OS0xYTFkLTRmY2UtOTNkNC04ZmRjYWEzYTZlMzAiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImFkbWluIn0.NaBdjGKCEK0O29DO_xK2nrTowun9lr6EVoiDqycnfYyUNCJX63LdHwusxhGTwSxCfL8onsUaOI2mjqR1Cte-uKhUkpJXDBPIM7VlJ6FvcQ6mDtFti5IiBd_VPhh6z-gzNQk-SH6-u35FqzO1QrJYGz-hlpzFqOr_emniRdxzxjfZCFnBOJRNldDAMh7u6MmYJOnyP4ukXUJFCydvi3IePLuqP2_QA0Y55D7ZjgRn3g7lllu4nZqgHcKyDFwnFuvJNumbHHJITzhisUSiftmuyJv1jNgkNTdYE2Y4wGP4rbobnBPBIZdMSe4WpkOiveNebdyqxfDhTUYvwDuLb7Hz_Q"
+	jwkUrl := "http://0.0.0.0:8080/auth/realms/master/protocol/openid-connect/certs"
+	isOk, err := tokenutil.Verify(ctx, tokenRaw, jwkUrl)
+	if err != nil {
+		t.Fatalf("Verify token failed: %v", err)
+	}
+	if !isOk {
+		t.Fatalf("Verify token failed")
+	}
+}

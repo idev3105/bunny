@@ -1,0 +1,58 @@
+version: "3"
+
+services:
+  keycloak:
+    image: bitnami/keycloak:24.0.3
+    environment:
+      - KEYCLOAK_ADMIN=admin # change to your admin username
+      - KEYCLOAK_ADMIN_PASSWORD=admin # change to your admin password
+      - KEYCLOAK_DATABASE_HOST=postgresql
+      - KEYCLOAK_DATABASE_PORT=5432
+      - KEYCLOAK_DATABASE_USER=bunny # change to your username
+      - KEYCLOAK_DATABASE_NAME=bunny # change to your database name
+      - KEYCLOAK_DATABASE_PASSWORD=bunny # change to your password
+      - KEYCLOAK_DATABASE_SCHEMA=keycloak
+    volumes:
+      - ./docker_data/keycloak:/bitnami/keycloak/data
+    ports:
+      - 8080:8080
+  redis:
+    image: bitnami/redis:7.0.15
+    environment:
+      - REDIS_PASSWORD=bunny # change to your password
+    ports:
+      - 6379:6379
+    volumes:
+      - ./docker_data/redis:/bitnami/redis/data
+  postgresql:
+    image: bitnami/postgresql:14.11.0
+    ports:
+      - 5432:5432
+    volumes:
+      - ./docker_data/postgres:/bitnami/postgresql
+    environment:
+      - POSTGRESQL_USERNAME=bunny # change to your username
+      - POSTGRESQL_PASSWORD=bunny # change to yser password
+      - POSTGRESQL_DATABASE=bunny # change to your database name
+  bytebase:
+    image: bytebase/bytebase:2.16.0
+    ports:
+      - 28080:8080
+    volumes:
+      - ./docker_data/bytebase:/var/opt/bytebase
+  zookeeper:
+    image: "bitnami/zookeeper:latest"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    ports:
+      - "2181:2181"
+  kafka:
+    image: "bitnami/kafka:latest"
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper

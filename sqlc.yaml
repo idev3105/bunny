@@ -1,0 +1,16 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "db/queries"
+    schema: "db/migrations"
+    gen:
+      go:
+        package: "sqlc_generated"
+        out: "generated/sqlc"
+        sql_package: "pgx/v5"
+        rename:
+          user_id: UserId
+overrides:
+  go:
+    rename:
+      d_user: User

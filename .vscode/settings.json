@@ -1,0 +1,4 @@
+{
+    "editor.formatOnSave": true,  
+    "go.goroot": "/Users/idev/.gvm/versions/go1.22.3.darwin.arm64",
+}

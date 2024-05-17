@@ -1,0 +1,45 @@
+definitions:
+  userhandler.UserDto:
+    properties:
+      id:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a sample server Petstore server.
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /user:
+    post:
+      consumes:
+      - application/json
+      description: Create new user
+      parameters:
+      - description: idToken
+        in: body
+        name: idToken
+        required: true
+        schema:
+          type: string
+      - description: username
+        in: body
+        name: username
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/userhandler.UserDto'
+      security:
+      - ApiKeyAuth: []
+      summary: Create new user
+      tags:
+      - user
+swagger: "2.0"
