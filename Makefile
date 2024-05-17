@@ -12,13 +12,19 @@ init:
 generate_sql:
 	sqlc generate
 
+generate_openapi:
+	swag init -g main.go
+
 # Dev target
-dev:
+server-dev:
 	go run . server
+
+example-consumer-dev:
+	go run . consumer example
 
 # Build target
 build:
-	$(GOBUILD) -o ./bin/bunny ./cmd
+	$(GOBUILD) -o ./bin/bunny .
 
 # Clean target
 clean:
