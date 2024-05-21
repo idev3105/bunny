@@ -7,13 +7,15 @@ import (
 )
 
 type appConfig struct {
-	Env       enum.Env `mapstructure:"ENV"`
-	Port      string   `mapstructure:"PORT"`
-	Dsn       string   `mapstructure:"DSN"`
-	JWKsUrl   string   `mapstructure:"JWKS_URL"`
-	RedisUrl  string   `mapstructure:"REDIS_URL"`
-	KafkaHost string   `mapstructure:"KAFKA_HOST"`
-	KafkaPort int32    `mapstructure:"KAFKA_PORT"`
+	Env         enum.Env `mapstructure:"ENV"`
+	Port        string   `mapstructure:"PORT"`
+	DbUrl       string   `mapstructure:"DB_URL"`
+	JWKsUrl     string   `mapstructure:"JWKS_URL"`
+	RedisUrl    string   `mapstructure:"REDIS_URL"`
+	KafkaHost   string   `mapstructure:"KAFKA_HOST"`
+	KafkaPort   int32    `mapstructure:"KAFKA_PORT"`
+	MongoUrl    string   `mapstructure:"MONGO_URL"`
+	MongoDbName string   `mapstructure:"MONGO_DB_NAME"`
 }
 
 func LoadConfig() *appConfig {

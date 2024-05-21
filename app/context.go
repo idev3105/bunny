@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"org.idev.bunny/backend/component/kafka"
+	"org.idev.bunny/backend/component/mongo"
 	"org.idev.bunny/backend/component/redis"
 	sqlc_generated "org.idev.bunny/backend/generated/sqlc"
 )
@@ -15,4 +16,5 @@ type AppContext struct {
 	Db            sqlc_generated.DBTX
 	RedisCli      *redis.RedisClient
 	KafkaProducer *kafka.Producer
+	MongoClient   *mongo.Client
 }

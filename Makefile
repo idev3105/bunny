@@ -8,6 +8,7 @@ GOGET = $(GOCMD) get
 # Init environment
 init:
 	go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
+	go install github.com/cosmtrek/air@latest
 
 generate_sql:
 	sqlc generate

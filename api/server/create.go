@@ -13,6 +13,7 @@ import (
 	"org.idev.bunny/backend/app"
 	"org.idev.bunny/backend/common/logger"
 	"org.idev.bunny/backend/component/kafka"
+	"org.idev.bunny/backend/component/mongo"
 	"org.idev.bunny/backend/component/redis"
 	userdomain "org.idev.bunny/backend/domain/user"
 	userrepository "org.idev.bunny/backend/repository/user"
@@ -42,14 +43,20 @@ func Create() *Server {
 		log.Fatalf("failed to connect to redis: %v", err)
 	}
 
-	log.Info("Connect to database " + appConfig.Dsn)
-	poolCfg, err := pgxpool.ParseConfig(appConfig.Dsn)
+	log.Info("Connect to database " + appConfig.DbUrl)
+	poolCfg, err := pgxpool.ParseConfig(appConfig.DbUrl)
 	if err != nil {
 		panic(err)
 	}
 	pool, err := pgxpool.NewWithConfig(ctx, poolCfg)
 	if err != nil {
 		panic(err)
+	}
+
+	log.Info("Connect to mongodb " + appConfig.MongoUrl)
+	mongoCli, err := mongo.NewMongoClient(ctx, appConfig.MongoUrl, appConfig.MongoDbName)
+	if err != nil {
+		log.Fatalf("failed to connect to mongodb: %v", err)
 	}
 
 	log.Info("Connect to kafka cluster " + appConfig.KafkaHost + ":" + fmt.Sprint(appConfig.KafkaPort))
@@ -65,6 +72,7 @@ func Create() *Server {
 		Db:            pool,
 		RedisCli:      redisCli,
 		KafkaProducer: kafkaProducer,
+		MongoClient:   mongoCli,
 	}
 
 	userRepo := userrepository.New(usersql.NewSqlRepository(AppCtx.Db), usercache.NewCachRepository(AppCtx.RedisCli))

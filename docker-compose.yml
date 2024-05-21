@@ -56,3 +56,15 @@ services:
       - "9092:9092"
     depends_on:
       - zookeeper
+  mongodb:
+    image: zcube/bitnami-compat-mongodb:latest
+    environment:
+      MONGODB_ROOT_USER: root # change it
+      MONGODB_ROOT_PASSWORD: password # change it
+      MONGODB_USERNAME: bunny # change it
+      MONGODB_PASSWORD: bunny # change it
+      MONGODB_DATABASE: bunny # change it
+    volumes:
+      - ./docker_data/mongodb:/bitnami/mongodb
+    ports:
+      - 27017:27017

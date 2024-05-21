@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -19,7 +20,7 @@ type Server struct {
 	e *echo.Echo
 }
 
-func (s *Server) Start(port string) error {
+func (s *Server) Start() error {
 
 	log := logger.New("Server", "Start server")
 
@@ -27,7 +28,7 @@ func (s *Server) Start(port string) error {
 	defer stop()
 
 	go func() {
-		if err := s.e.Start(port); err != nil && err != http.ErrServerClosed {
+		if err := s.e.Start(fmt.Sprintf(":%v", AppCtx.Config.Port)); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("Shutting down the server: %v", err)
 		}
 	}()
@@ -44,6 +45,12 @@ func (s *Server) Start(port string) error {
 
 	log.Info("Close database connection")
 	AppCtx.Db.(*pgxpool.Pool).Close()
+
+	log.Info("Close mongo connection")
+	if err := AppCtx.MongoClient.Close(ctx); err != nil {
+		log.Errorf("Mongo close fail: %v", err)
+		return err
+	}
 
 	log.Info("Close kafka producer")
 	if err := AppCtx.KafkaProducer.Close(); err != nil {

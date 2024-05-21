@@ -19,7 +19,7 @@ func NewServerCommand() *cobra.Command {
 
 func startServer() {
 	s := server.Create()
-	err := s.Start(":3000")
+	err := s.Start()
 	if err != nil {
 		panic(err)
 	}
