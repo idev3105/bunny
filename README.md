@@ -8,5 +8,5 @@
   - Build tool: [GNU Make](https://www.gnu.org/software/make/manual/make.html#Rule-Introduction)
   - Databases: [PostgreSQL](https://github.com/sqlc-dev/sqlc)
   - Caching: [Redis](https://redis.io/)
-  - Migration: [Bytebase](https://www.bytebase.com/)
+  - Migration: [Go-Migrate](https://github.com/golang-migrate/migrate/tree/master)
   - Pub/Sub: [Kafka](https://kafka.apache.org/)

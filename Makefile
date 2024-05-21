@@ -27,6 +27,15 @@ example-consumer-dev:
 build:
 	$(GOBUILD) -o ./bin/bunny .
 
+migrate-up:
+	migrate -database postgresql://bunny:bunny@localhost:5432/bunny?sslmode=disable -path db/migrations up
+
+migrate-down:
+	migrate -database postgresql://bunny:bunny@localhost:5432/bunny?sslmode=disable -path db/migrations down 1
+
+migrate-create:
+	migrate create -ext sql -dir db/migrations -tz utc $(name)
+
 # Clean target
 clean:
 	$(GOCLEAN)
