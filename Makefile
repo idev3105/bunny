@@ -9,6 +9,7 @@ GOGET = $(GOCMD) get
 init:
 	go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 	go install github.com/cosmtrek/air@latest
+	go install github.com/swaggo/swag/cmd/swag@latest
 
 generate_sql:
 	sqlc generate
