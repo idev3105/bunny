@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/spf13/cobra"
 	"org.idev.bunny/backend/cmd"
-	errors "org.idev.bunny/backend/common/error"
+	"org.idev.bunny/backend/common/errors"
 	"org.idev.bunny/backend/common/logger"
 	_ "org.idev.bunny/backend/docs"
 )

@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	tokenutil "org.idev.bunny/backend/util/token"
+	tokenutil "org.idev.bunny/backend/utils/token"
 )
 
 func TestVerify(t *testing.T) {

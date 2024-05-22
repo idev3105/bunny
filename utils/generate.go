@@ -1,4 +1,4 @@
-package helper
+package utils
 
 func GenerateOTP() string {
 	// TODO: implement here

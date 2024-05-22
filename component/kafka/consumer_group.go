@@ -106,6 +106,4 @@ func (k *ConsumerGroup) ConsumeClaim(session sarama.ConsumerGroupSession, claim 
 			return nil
 		}
 	}
-
-	return nil
 }

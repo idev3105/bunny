@@ -7,8 +7,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"org.idev.bunny/backend/common"
-	errors "org.idev.bunny/backend/common/error"
+	"org.idev.bunny/backend/common/errors"
+	"org.idev.bunny/backend/utils"
 )
 
 type Client struct {
@@ -69,7 +69,7 @@ func (m *Client) FindOne(ctx context.Context, collection string, filter map[stri
 
 func (m *Client) FindMany(ctx context.Context, collection string, filter map[string]any, page int64, pageSize int64, target any) error {
 	opts := &options.FindOptions{
-		Skip:  common.Int64((page - 1) * pageSize),
+		Skip:  utils.Int64((page - 1) * pageSize),
 		Limit: &pageSize,
 	}
 	res, err := m.db.Collection(collection).Find(ctx, filter, opts)
