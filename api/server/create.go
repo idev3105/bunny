@@ -21,9 +21,7 @@ import (
 	usersql "org.idev.bunny/backend/repository/user/sql"
 )
 
-func Create() *Server {
-
-	ctx := context.Background()
+func Create(ctx context.Context) (*Server, error) {
 
 	e := echo.New()
 	log := logger.New("Server", "create server")
@@ -38,36 +36,38 @@ func Create() *Server {
 	appConfig := app.LoadConfig()
 
 	log.Info("Connect to redis " + appConfig.RedisUrl)
-	redisCli, err := redis.NewClient(appConfig.RedisUrl)
+	redisCli, err := redis.NewClient(ctx, appConfig.RedisUrl)
 	if err != nil {
-		log.Fatalf("failed to connect to redis: %v", err)
+		return nil, err
 	}
 
 	log.Info("Connect to database " + appConfig.DbUrl)
 	poolCfg, err := pgxpool.ParseConfig(appConfig.DbUrl)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	pool, err := pgxpool.NewWithConfig(ctx, poolCfg)
 	if err != nil {
-		panic(err)
+		return nil, err
+	}
+	if err := pool.Ping(ctx); err != nil {
+		return nil, err
 	}
 
 	log.Info("Connect to mongodb " + appConfig.MongoUrl)
 	mongoCli, err := mongo.NewMongoClient(ctx, appConfig.MongoUrl, appConfig.MongoDbName)
 	if err != nil {
-		log.Fatalf("failed to connect to mongodb: %v", err)
+		return nil, err
 	}
 
 	log.Info("Connect to kafka cluster " + appConfig.KafkaHost + ":" + fmt.Sprint(appConfig.KafkaPort))
 	kafkaProducer, err := kafka.NewProducer(appConfig.KafkaHost, appConfig.KafkaPort)
 	if err != nil {
-		log.Fatalf("Failed to connect to kafka: %v", err)
+		return nil, err
 	}
 
 	// init app context instance
 	AppCtx = &app.AppContext{
-		Ctx:           ctx,
 		Config:        appConfig,
 		Db:            pool,
 		RedisCli:      redisCli,
@@ -87,5 +87,5 @@ func Create() *Server {
 		route.NewUserRouter(v1, AppCtx, userUsecase)
 	}
 
-	return &Server{e: e}
+	return &Server{e: e}, nil
 }

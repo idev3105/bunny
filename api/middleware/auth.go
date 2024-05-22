@@ -5,8 +5,8 @@ import (
 	"org.idev.bunny/backend/api/enum"
 	"org.idev.bunny/backend/app"
 	"org.idev.bunny/backend/common/logger"
-	tokenutil "org.idev.bunny/backend/common/util/token"
 	userrepository "org.idev.bunny/backend/repository/user"
+	tokenutil "org.idev.bunny/backend/util/token"
 )
 
 func AuthGuard(appCtx *app.AppContext, userRepo *userrepository.UserRepository) echo.MiddlewareFunc {

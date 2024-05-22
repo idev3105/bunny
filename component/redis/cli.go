@@ -18,7 +18,7 @@ type RedisClient struct {
 	cli *redis.Client
 }
 
-func NewClient(connUrl string) (*RedisClient, error) {
+func NewClient(ctx context.Context, connUrl string) (*RedisClient, error) {
 	opts, err := redis.ParseURL(connUrl)
 	if err != nil {
 		return nil, err
@@ -26,6 +26,10 @@ func NewClient(connUrl string) (*RedisClient, error) {
 	cli := redis.NewClient(opts)
 	if cli == nil {
 		return nil, errors.New("create redis client fail")
+	}
+
+	if err := cli.Ping(ctx); err != nil {
+		return nil, err.Err()
 	}
 
 	return &RedisClient{

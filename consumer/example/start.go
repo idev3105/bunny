@@ -10,10 +10,9 @@ import (
 	"org.idev.bunny/backend/common/logger"
 )
 
-func (ec *ExampleConsumer) Start() error {
+func (ec *ExampleConsumer) Start(ctx context.Context) error {
 
 	log := logger.New("ExampleConsumer", "Start consumer")
-	ctx := context.Background()
 	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, os.Kill)
 	defer stop()
 

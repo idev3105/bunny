@@ -2,13 +2,13 @@ package mongo
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"org.idev.bunny/backend/common"
+	errors "org.idev.bunny/backend/common/error"
 )
 
 type Client struct {
@@ -24,6 +24,10 @@ func NewMongoClient(ctx context.Context, url string, dbName string) (*Client, er
 	cli, err := mongo.Connect(ctx, opts)
 	if err != nil {
 		return nil, err
+	}
+
+	if err := cli.Ping(ctx, nil); err != nil {
+		return nil, errors.New("ping mongo fail")
 	}
 
 	db := cli.Database(dbName)

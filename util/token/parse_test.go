@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	tokenutil "org.idev.bunny/backend/common/util/token"
+	tokenutil "org.idev.bunny/backend/util/token"
 )
 
 func TestParse(t *testing.T) {

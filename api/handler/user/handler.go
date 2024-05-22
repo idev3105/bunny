@@ -5,8 +5,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"org.idev.bunny/backend/app"
-	tokenutil "org.idev.bunny/backend/common/util/token"
 	userdomain "org.idev.bunny/backend/domain/user"
+	tokenutil "org.idev.bunny/backend/util/token"
 )
 
 // User gin handler

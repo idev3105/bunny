@@ -3,6 +3,8 @@ package main
 import (
 	"github.com/spf13/cobra"
 	"org.idev.bunny/backend/cmd"
+	errors "org.idev.bunny/backend/common/error"
+	"org.idev.bunny/backend/common/logger"
 	_ "org.idev.bunny/backend/docs"
 )
 
@@ -10,6 +12,9 @@ import (
 // @version 1.0
 // @description This is a sample server Petstore server.
 func main() {
+
+	log := logger.New("main", "Root")
+
 	rootCmd := &cobra.Command{
 		Use:   "",
 		Short: "help",
@@ -21,5 +26,8 @@ func main() {
 
 	rootCmd.AddCommand(cmd.NewServerCommand())
 	rootCmd.AddCommand(cmd.NewConsumerCmd())
-	rootCmd.Execute()
+	if err := rootCmd.Execute(); err != nil {
+		log.Error(errors.ToString(err))
+		panic(err)
+	}
 }
