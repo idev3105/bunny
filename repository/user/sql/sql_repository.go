@@ -24,7 +24,7 @@ func (r *UserSqlRepo) FindByUserId(ctx context.Context, userId string) (*userent
 	if err != nil {
 		return nil, err
 	}
-	return mapper.MapToDomain(&user), nil
+	return mapper.MapToDomain(user), nil
 }
 
 func (r *UserSqlRepo) Save(ctx context.Context, user *userentity.User) (*userentity.User, error) {

@@ -46,8 +46,11 @@ func (m *Client) Close(ctx context.Context) error {
 // @return inserted id, error
 func (m *Client) SaveOne(ctx context.Context, collection string, document any) (string, error) {
 	res, err := m.db.Collection(collection).InsertOne(ctx, document)
+	if err != nil {
+		return "", err
+	}
 	insertedID := res.InsertedID.(primitive.ObjectID).String()
-	return insertedID, err
+	return insertedID, nil
 }
 
 func (m *Client) SaveMany(ctx context.Context, collection string, documents []any) error {

@@ -6,7 +6,7 @@ import (
 	sqlc_generated "org.idev.bunny/backend/generated/sqlc"
 )
 
-func MapToDomain(u *sqlc_generated.User) *userentity.User {
+func MapToDomain(u sqlc_generated.User) *userentity.User {
 	user := &userentity.User{}
 	user.UserId = u.UserId
 	user.CreatedAt = &u.CreatedAt.Time
@@ -17,7 +17,7 @@ func MapToDomain(u *sqlc_generated.User) *userentity.User {
 	return user
 }
 
-func MapToSQLModel(u *userentity.User) *sqlc_generated.User {
+func MapToSQLModel(u userentity.User) *sqlc_generated.User {
 	user := &sqlc_generated.User{}
 	user.UserId = u.UserId
 	user.CreatedAt = pgtype.Timestamp{Time: *u.CreatedAt, Valid: true}
