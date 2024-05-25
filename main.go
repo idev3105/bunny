@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/spf13/cobra"
 	"org.idev.bunny/backend/cmd"
 	"org.idev.bunny/backend/common/errors"
@@ -26,6 +28,9 @@ func main() {
 
 	rootCmd.AddCommand(cmd.NewServerCommand())
 	rootCmd.AddCommand(cmd.NewConsumerCmd())
+
+	log.Infof("Application run on PID: %v", os.Getpid())
+
 	if err := rootCmd.Execute(); err != nil {
 		log.Error(errors.ToString(err))
 		panic(err)

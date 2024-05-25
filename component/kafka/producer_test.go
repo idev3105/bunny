@@ -25,4 +25,7 @@ func TestProducer(t *testing.T) {
 			Value: []byte("Hello, World! 2"),
 		},
 	})
+	if err != nil {
+		t.Fatal(err)
+	}
 }
