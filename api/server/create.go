@@ -68,6 +68,7 @@ func Create(ctx context.Context) (*Server, error) {
 
 	// init app context instance
 	AppCtx = &app.AppContext{
+		Ctx:           ctx,
 		Config:        appConfig,
 		Db:            pool,
 		RedisCli:      redisCli,
