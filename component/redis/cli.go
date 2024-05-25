@@ -28,7 +28,7 @@ func NewClient(ctx context.Context, connUrl string) (*RedisClient, error) {
 		return nil, errors.New("create redis client fail")
 	}
 
-	if err := cli.Ping(ctx); err != nil {
+	if err := cli.Ping(ctx); err.Err() != nil {
 		return nil, err.Err()
 	}
 
