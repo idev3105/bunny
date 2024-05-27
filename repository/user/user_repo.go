@@ -5,16 +5,14 @@ import (
 
 	"org.idev.bunny/backend/common/logger"
 	userentity "org.idev.bunny/backend/domain/user/entity"
-	usercache "org.idev.bunny/backend/repository/user/cache"
-	usersql "org.idev.bunny/backend/repository/user/sql"
 )
 
 type UserRepository struct {
-	sqlRepo   *usersql.UserSqlRepo
-	cacheRepo *usercache.UserCacheRepo
+	sqlRepo   *UserSqlRepo
+	cacheRepo *UserCacheRepo
 }
 
-func New(sqlRepo *usersql.UserSqlRepo, cacheRepo *usercache.UserCacheRepo) *UserRepository {
+func New(sqlRepo *UserSqlRepo, cacheRepo *UserCacheRepo) *UserRepository {
 	return &UserRepository{
 		sqlRepo:   sqlRepo,
 		cacheRepo: cacheRepo,

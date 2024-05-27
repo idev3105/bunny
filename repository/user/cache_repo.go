@@ -1,4 +1,4 @@
-package usercache
+package userrepository
 
 import (
 	"context"
@@ -12,7 +12,7 @@ type UserCacheRepo struct {
 }
 
 // create new instance of redis repository
-func NewCachRepository(redisCli *redis.RedisClient) *UserCacheRepo {
+func NewCacheRepository(redisCli *redis.RedisClient) *UserCacheRepo {
 	return &UserCacheRepo{redisCli: redisCli}
 }
 

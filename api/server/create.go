@@ -15,10 +15,6 @@ import (
 	"org.idev.bunny/backend/component/kafka"
 	"org.idev.bunny/backend/component/mongo"
 	"org.idev.bunny/backend/component/redis"
-	userdomain "org.idev.bunny/backend/domain/user"
-	userrepository "org.idev.bunny/backend/repository/user"
-	usercache "org.idev.bunny/backend/repository/user/cache"
-	usersql "org.idev.bunny/backend/repository/user/sql"
 )
 
 func Create(ctx context.Context) (*Server, error) {
@@ -76,16 +72,13 @@ func Create(ctx context.Context) (*Server, error) {
 		MongoClient:   mongoCli,
 	}
 
-	userRepo := userrepository.New(usersql.NewSqlRepository(AppCtx.Db), usercache.NewCachRepository(AppCtx.RedisCli))
-	userUsecase := userdomain.NewUserUseCase(userRepo)
-
-	e.Use(appMiddleware.AuthGuard(AppCtx, userRepo))
+	e.Use(appMiddleware.AuthGuard(AppCtx))
 
 	route.NewExamplePanicErrorRouter(e)
 
 	v1 := e.Group("/api/v1")
 	{
-		route.NewUserRouter(v1, AppCtx, userUsecase)
+		route.NewUserRouter(v1, AppCtx)
 	}
 
 	return &Server{e: e}, nil

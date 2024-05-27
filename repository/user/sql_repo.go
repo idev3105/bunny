@@ -1,4 +1,4 @@
-package usersql
+package userrepository
 
 import (
 	"context"
@@ -15,8 +15,8 @@ type UserSqlRepo struct {
 }
 
 // create new instance of sql repository
-func NewSqlRepository(db sqlc_generated.DBTX) *UserSqlRepo {
-	return &UserSqlRepo{db: db, queries: sqlc_generated.New(db)}
+func NewSqlRepository(queries *sqlc_generated.Queries) *UserSqlRepo {
+	return &UserSqlRepo{queries: queries}
 }
 
 func (r *UserSqlRepo) FindByUserId(ctx context.Context, userId string) (*userentity.User, error) {

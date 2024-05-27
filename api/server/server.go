@@ -8,7 +8,6 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/labstack/echo/v4"
 	"org.idev.bunny/backend/app"
 	"org.idev.bunny/backend/common/logger"
@@ -44,7 +43,7 @@ func (s *Server) Start() error {
 	}
 
 	log.Info("Close database connection")
-	AppCtx.Db.(*pgxpool.Pool).Close()
+	AppCtx.Db.Close()
 
 	log.Info("Close mongo connection")
 	if err := AppCtx.MongoClient.Close(ctx); err != nil {

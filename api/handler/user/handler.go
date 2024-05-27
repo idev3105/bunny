@@ -4,19 +4,19 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"org.idev.bunny/backend/api/di"
 	"org.idev.bunny/backend/app"
-	userdomain "org.idev.bunny/backend/domain/user"
+	sqlc_generated "org.idev.bunny/backend/generated/sqlc"
 	tokenutil "org.idev.bunny/backend/utils/token"
 )
 
 // User gin handler
 type UserHandler struct {
-	appCtx      *app.AppContext
-	userUseCase userdomain.UserUseCase
+	appCtx *app.AppContext
 }
 
-func NewUserHandler(appCtx *app.AppContext, userUserCase userdomain.UserUseCase) *UserHandler {
-	return &UserHandler{appCtx: appCtx, userUseCase: userUserCase}
+func NewUserHandler(appCtx *app.AppContext) *UserHandler {
+	return &UserHandler{appCtx: appCtx}
 }
 
 // Create new user
@@ -45,7 +45,8 @@ func (u *UserHandler) CreateUser() echo.HandlerFunc {
 		}
 		userId := token.Subject()
 
-		user, err := u.userUseCase.Create(ctx.Request().Context(), userId, data.Username)
+		userUseCase := di.NewUserUseCase(sqlc_generated.New(u.appCtx.Db), u.appCtx.RedisCli)
+		user, err := userUseCase.Create(ctx.Request().Context(), userId, data.Username)
 		if err != nil {
 			panic(err)
 		}

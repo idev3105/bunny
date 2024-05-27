@@ -2,14 +2,15 @@ package middleware
 
 import (
 	"github.com/labstack/echo/v4"
+	"org.idev.bunny/backend/api/di"
 	"org.idev.bunny/backend/api/enum"
 	"org.idev.bunny/backend/app"
 	"org.idev.bunny/backend/common/logger"
-	userrepository "org.idev.bunny/backend/repository/user"
+	sqlc_generated "org.idev.bunny/backend/generated/sqlc"
 	tokenutil "org.idev.bunny/backend/utils/token"
 )
 
-func AuthGuard(appCtx *app.AppContext, userRepo *userrepository.UserRepository) echo.MiddlewareFunc {
+func AuthGuard(appCtx *app.AppContext) echo.MiddlewareFunc {
 
 	log := logger.New("Middleware", "AuthGuard")
 
@@ -31,6 +32,9 @@ func AuthGuard(appCtx *app.AppContext, userRepo *userrepository.UserRepository) 
 				return echo.NewHTTPError(401, err.Error())
 			}
 			userId := token.Subject()
+
+			userRepo := di.NewUserRepository(sqlc_generated.New(appCtx.Db), appCtx.RedisCli)
+
 			user, err := userRepo.FindByUserId(ctx.Request().Context(), userId)
 			if err != nil {
 				log.Errorf("Error verify token: %v", err)
