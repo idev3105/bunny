@@ -62,7 +62,9 @@ func (u *UserHandler) CreateUser() echo.HandlerFunc {
 func (u *UserHandler) GetUserByUserId() echo.HandlerFunc {
 	return func(ctx echo.Context) error {
 		userId := ctx.Param("id")
-		user, err := u.userUseCase.FindByUserId(ctx.Request().Context(), userId)
+
+		userUseCase := di.NewUserUseCase(sqlc_generated.New(u.appCtx.Db), u.appCtx.RedisCli)
+		user, err := userUseCase.FindByUserId(ctx.Request().Context(), userId)
 		if err != nil {
 			panic(err)
 		}
