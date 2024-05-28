@@ -43,6 +43,34 @@ func (m *Client) Close(ctx context.Context) error {
 	return m.cli.Disconnect(ctx)
 }
 
+func (m *Client) WithTransaction(ctx context.Context, fn func(cli *Client) error) error {
+	session, err := m.cli.StartSession()
+	if err != nil {
+		return err
+	}
+	defer session.EndSession(ctx)
+
+	err = mongo.WithSession(ctx, session, func(sc mongo.SessionContext) error {
+		if err := session.StartTransaction(); err != nil {
+			return err
+		}
+		if err := fn(m); err != nil {
+			return err
+		}
+		if err := session.CommitTransaction(sc); err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		if inErr := session.AbortTransaction(ctx); inErr != nil {
+			return errors.Wrap(err, inErr.Error())
+		}
+		return err
+	}
+	return nil
+}
+
 // @return inserted id, error
 func (m *Client) SaveOne(ctx context.Context, collection string, document any) (string, error) {
 	res, err := m.db.Collection(collection).InsertOne(ctx, document)
@@ -127,4 +155,8 @@ func (m *Client) DeleteMany(ctx context.Context, collection string, filter map[s
 		return errors.New("delete failed")
 	}
 	return nil
+}
+
+func (m *Client) Count(ctx context.Context, collection string, filter map[string]any) (int64, error) {
+	return m.db.Collection(collection).CountDocuments(ctx, filter)
 }
