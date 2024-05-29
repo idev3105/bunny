@@ -3,7 +3,6 @@ package app
 import (
 	"github.com/spf13/viper"
 	"org.idev.bunny/backend/api/enum"
-	"org.idev.bunny/backend/common/logger"
 )
 
 type appConfig struct {
@@ -19,8 +18,6 @@ type appConfig struct {
 }
 
 func LoadConfig() (*appConfig, error) {
-
-	log := logger.New("Server", "Load Config")
 
 	viper.SetConfigName(".env")
 	viper.SetConfigType("env")
