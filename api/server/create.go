@@ -29,7 +29,10 @@ func Create(ctx context.Context) (*Server, error) {
 
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
-	appConfig := app.LoadConfig()
+	appConfig, err := app.LoadConfig()
+	if err != nil {
+		return nil, err
+	}
 
 	log.Info("Connect to redis " + appConfig.RedisUrl)
 	redisCli, err := redis.NewClient(ctx, appConfig.RedisUrl)

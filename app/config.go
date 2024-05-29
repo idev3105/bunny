@@ -18,7 +18,7 @@ type appConfig struct {
 	MongoDbName string   `mapstructure:"MONGO_DB_NAME"`
 }
 
-func LoadConfig() *appConfig {
+func LoadConfig() (*appConfig, error) {
 
 	log := logger.New("Server", "Load Config")
 
@@ -29,13 +29,16 @@ func LoadConfig() *appConfig {
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
-		log.Fatal(err)
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			log.Warnf("config not found: %v", err)
+		}
+		return nil, err
 	}
 
 	appConfig := &appConfig{}
 	if err := viper.Unmarshal(appConfig); err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	return appConfig
+	return appConfig, nil
 }

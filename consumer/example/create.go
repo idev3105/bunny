@@ -8,7 +8,10 @@ import (
 )
 
 func New(groupID string, topics []string) (*ExampleConsumer, error) {
-	appConfig := app.LoadConfig()
+	appConfig, err := app.LoadConfig()
+	if err != nil {
+		return nil, err
+	}
 
 	cg, err := kafka.NewConsumerGroup(appConfig.KafkaHost, appConfig.KafkaPort, groupID, topics, func(msg []byte) error {
 		// TODO implement here
