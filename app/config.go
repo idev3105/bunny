@@ -29,11 +29,7 @@ func LoadConfig() (*appConfig, error) {
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			log.Warnf("config not found: %v", err)
-		} else {
-			return nil, err
-		}
+		return nil, err
 	}
 
 	appConfig := &appConfig{}
