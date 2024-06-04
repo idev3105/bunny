@@ -1,6 +1,7 @@
 package exampleconsumer
 
 import (
+	"context"
 	"fmt"
 
 	"org.idev.bunny/backend/app"
@@ -13,7 +14,7 @@ func New(groupID string, topics []string) (*ExampleConsumer, error) {
 		return nil, err
 	}
 
-	cg, err := kafka.NewConsumerGroup(appConfig.KafkaHost, appConfig.KafkaPort, groupID, topics, func(msg []byte) error {
+	cg, err := kafka.NewConsumerGroup(appConfig.KafkaHost, appConfig.KafkaPort, groupID, topics, func(ctx context.Context, msg []byte) error {
 		// TODO implement here
 		fmt.Println(string(msg))
 		return nil

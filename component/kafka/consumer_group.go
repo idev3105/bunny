@@ -14,13 +14,13 @@ type ConsumerGroup struct {
 	Port          int32
 	GroupID       string
 	Topics        []string
-	OnReceiveFunc func([]byte) error
+	OnReceiveFunc func(ctx context.Context, value []byte) error
 	Ready         chan bool
 
 	consumerGroup sarama.ConsumerGroup
 }
 
-func NewConsumerGroup(host string, port int32, groupID string, topics []string, onReceiveFunc func([]byte) error) (*ConsumerGroup, error) {
+func NewConsumerGroup(host string, port int32, groupID string, topics []string, onReceiveFunc func(context.Context, []byte) error) (*ConsumerGroup, error) {
 	addrs := []string{fmt.Sprintf("%v:%v", host, port)}
 
 	cfg := sarama.NewConfig()
@@ -98,6 +98,12 @@ func (k *ConsumerGroup) ConsumeClaim(session sarama.ConsumerGroupSession, claim 
 				return nil
 			}
 			logger.Infof("Message claimed: value = %s, timestamp = %v, topic = %s", string(message.Value), message.Timestamp, message.Topic)
+
+			err := k.OnReceiveFunc(session.Context(), message.Value)
+			if err != nil {
+				return err
+			}
+
 			session.MarkMessage(message, "")
 		// Should return when `session.Context()` is done.
 		// If not, will raise `ErrRebalanceInProgress` or `read tcp <ip>:<port>: i/o timeout` when kafka rebalance. see:
