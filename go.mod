@@ -5,7 +5,7 @@ go 1.22.3
 require (
 	github.com/IBM/sarama v1.43.2
 	github.com/jackc/pgx/v5 v5.5.5
-	github.com/labstack/echo/v4 v4.11.4
+	github.com/labstack/echo/v4 v4.12.0
 	github.com/redis/go-redis/v9 v9.5.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.0
