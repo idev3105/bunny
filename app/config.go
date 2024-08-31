@@ -5,19 +5,28 @@ import (
 	"org.idev.bunny/backend/api/enum"
 )
 
-type appConfig struct {
-	Env         enum.Env `mapstructure:"ENV"`
-	Port        string   `mapstructure:"PORT"`
-	DbUrl       string   `mapstructure:"DB_URL"`
-	JWKsUrl     string   `mapstructure:"JWKS_URL"`
-	RedisUrl    string   `mapstructure:"REDIS_URL"`
-	KafkaHost   string   `mapstructure:"KAFKA_HOST"`
-	KafkaPort   int32    `mapstructure:"KAFKA_PORT"`
-	MongoUrl    string   `mapstructure:"MONGO_URL"`
-	MongoDbName string   `mapstructure:"MONGO_DB_NAME"`
+type Config struct {
+	Env  enum.Env `mapstructure:"ENV"`
+	Port string   `mapstructure:"PORT"`
+
+	EnableDb bool   `mapstructure:"ENABLE_DB"`
+	DbUrl    string `mapstructure:"DB_URL"`
+
+	EnableRedis bool   `mapstructure:"ENABLE_REDIS"`
+	RedisUrl    string `mapstructure:"REDIS_URL"`
+
+	EnableKafka bool   `mapstructure:"ENABLE_KAFKA"`
+	KafkaHost   string `mapstructure:"KAFKA_HOST"`
+	KafkaPort   int32  `mapstructure:"KAFKA_PORT"`
+
+	EnableMongo bool   `mapstructure:"ENABLE_MONGO"`
+	MongoUrl    string `mapstructure:"MONGO_URL"`
+	MongoDbName string `mapstructure:"MONGO_DB_NAME"`
+
+	JWKsUrl string `mapstructure:"JWKS_URL"`
 }
 
-func LoadConfig() (*appConfig, error) {
+func LoadConfig() (*Config, error) {
 
 	viper.SetConfigName(".env")
 	viper.SetConfigType("env")
@@ -29,7 +38,7 @@ func LoadConfig() (*appConfig, error) {
 		return nil, err
 	}
 
-	appConfig := &appConfig{}
+	appConfig := &Config{}
 	if err := viper.Unmarshal(appConfig); err != nil {
 		return nil, err
 	}

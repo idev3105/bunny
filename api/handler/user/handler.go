@@ -44,7 +44,7 @@ func (u *UserHandler) CreateUser() echo.HandlerFunc {
 		}
 		userId := token.Subject()
 
-		userUseCase := di.NewUserUseCase(sqlc_generated.New(u.appCtx.Db), u.appCtx.RedisCli)
+		userUseCase := di.NewUserUseCase(sqlc_generated.New(u.appCtx.Db), u.appCtx.Redis)
 		user, err := userUseCase.Create(ctx.Request().Context(), userId, data.Username)
 		if err != nil {
 			panic(err)
@@ -70,7 +70,7 @@ func (u *UserHandler) GetUserByUserId() echo.HandlerFunc {
 	return func(ctx echo.Context) error {
 		userId := ctx.Param("id")
 
-		userUseCase := di.NewUserUseCase(sqlc_generated.New(u.appCtx.Db), u.appCtx.RedisCli)
+		userUseCase := di.NewUserUseCase(sqlc_generated.New(u.appCtx.Db), u.appCtx.Redis)
 		user, err := userUseCase.FindByUserId(ctx.Request().Context(), userId)
 		if err != nil {
 			panic(err)

@@ -36,30 +36,34 @@ func (s *Server) Start() error {
 	ctx, cancel := context.WithTimeout(AppCtx.Ctx, 10*time.Second)
 	defer cancel()
 
-	log.Info("Close redis connection")
-	if err := AppCtx.RedisCli.Close(); err != nil {
-		log.Errorf("Redis close fail: %v", err)
-		return err
+	if AppCtx.Redis != nil {
+		log.Info("Close redis connection")
+		if err := AppCtx.Redis.Close(); err != nil {
+			log.Errorf("Redis close fail: %v", err)
+			return err
+		}
 	}
 
-	log.Info("Close database connection")
-	AppCtx.Db.Close()
-
-	log.Info("Close mongo connection")
-	if err := AppCtx.MongoClient.Close(ctx); err != nil {
-		log.Errorf("Mongo close fail: %v", err)
-		return err
+	if AppCtx.Mongo != nil {
+		log.Info("Close database connection")
+		if err := AppCtx.Mongo.Close(ctx); err != nil {
+			log.Errorf("Mongo close fail: %v", err)
+			return err
+		}
 	}
 
-	log.Info("Close kafka producer")
-	if err := AppCtx.KafkaProducer.Close(); err != nil {
-		log.Errorf("Kafka producer close fail: %v", err)
-		return err
+	if AppCtx.KafkaProducer != nil {
+		log.Info("Close kafka producer")
+		if err := AppCtx.KafkaProducer.Close(); err != nil {
+			log.Errorf("Kafka producer close fail: %v", err)
+			return err
+		}
 	}
 
 	if err := s.e.Shutdown(ctx); err != nil {
 		log.Errorf("Server shutdown fail: %v", err)
 		return err
 	}
+
 	return nil
 }

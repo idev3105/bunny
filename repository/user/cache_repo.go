@@ -8,11 +8,11 @@ import (
 )
 
 type UserCacheRepo struct {
-	redisCli *redis.RedisClient
+	redisCli *redis.Client
 }
 
 // create new instance of redis repository
-func NewCacheRepository(redisCli *redis.RedisClient) *UserCacheRepo {
+func NewCacheRepository(redisCli *redis.Client) *UserCacheRepo {
 	return &UserCacheRepo{redisCli: redisCli}
 }
 

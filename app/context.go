@@ -12,9 +12,9 @@ import (
 // Contain app context
 type AppContext struct {
 	Ctx           context.Context
-	Config        *appConfig
+	Config        *Config
 	Db            *pgxpool.Pool
-	RedisCli      *redis.RedisClient
+	Redis         *redis.Client
 	KafkaProducer *kafka.Producer
-	MongoClient   *mongo.Client
+	Mongo         *mongo.Client
 }

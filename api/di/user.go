@@ -7,12 +7,12 @@ import (
 	userrepository "org.idev.bunny/backend/repository/user"
 )
 
-func NewUserUseCase(queries *sqlc_generated.Queries, redisCli *redis.RedisClient) userdomain.UserUseCase {
+func NewUserUseCase(queries *sqlc_generated.Queries, redisCli *redis.Client) userdomain.UserUseCase {
 	repo := NewUserRepository(queries, redisCli)
 	return userdomain.NewUserUseCase(repo)
 }
 
-func NewUserRepository(queries *sqlc_generated.Queries, redisCli *redis.RedisClient) userdomain.UserRepository {
+func NewUserRepository(queries *sqlc_generated.Queries, redisCli *redis.Client) userdomain.UserRepository {
 	sql := userrepository.NewSqlRepository(queries)
 	cache := userrepository.NewCacheRepository(redisCli)
 	return userrepository.New(sql, cache)
