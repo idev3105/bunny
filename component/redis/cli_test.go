@@ -2,8 +2,11 @@ package redis
 
 import (
 	"context"
+	"errors"
 	"testing"
 	"time"
+
+	"github.com/redis/go-redis/v9"
 )
 
 func TestRedisSetAString(t *testing.T) {
@@ -33,7 +36,7 @@ func TestRedisSetAInterface(t *testing.T) {
 	}
 }
 
-func TestRedisGetStruct(t *testing.T) {
+func TestRedisGetStructNotFound(t *testing.T) {
 	ctx := context.TODO()
 	redisCli, err := NewClient(ctx, "redis://:bunny@localhost:6379/0")
 	if err != nil {
@@ -45,10 +48,28 @@ func TestRedisGetStruct(t *testing.T) {
 	var value testStruct
 	err = redisCli.GetStruct(ctx, "key-not-found", &value)
 	if err != nil {
+		if errors.Is(err, redis.Nil) {
+			// this is expected
+			return
+		}
 		t.Fatal(err)
 	}
-	if value.Name != "test" {
-		t.Fatal("get struct fail")
+	t.Fatal("expected error")
+}
+
+func TestRedisGetStruct(t *testing.T) {
+	ctx := context.TODO()
+	redisCli, err := NewClient(ctx, "redis://:bunny@localhost:6379/0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	type testStruct struct {
+		Name string
+	}
+	var value testStruct
+	err = redisCli.GetStruct(ctx, "key", &value)
+	if err != nil {
+		t.Fatal(err)
 	}
 }
 
