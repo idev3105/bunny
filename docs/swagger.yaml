@@ -1,5 +1,5 @@
 definitions:
-  userhandler.UserDto:
+  UserDto:
     properties:
       id:
         type: string
@@ -17,6 +17,7 @@ paths:
       consumes:
       - application/json
       description: Create new user
+      operationId: CreateUser
       parameters:
       - description: idToken
         in: body
@@ -36,10 +37,28 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/userhandler.UserDto'
-      security:
-      - ApiKeyAuth: []
+            $ref: '#/definitions/UserDto'
       summary: Create new user
+      tags:
+      - user
+  /user/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get user by userId
+      operationId: GetUserByUserId
+      parameters:
+      - description: userId
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Get user by userId
       tags:
       - user
 swagger: "2.0"

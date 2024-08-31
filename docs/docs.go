@@ -17,11 +17,6 @@ const docTemplate = `{
     "paths": {
         "/user": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Create new user",
                 "consumes": [
                     "application/json"
@@ -33,6 +28,7 @@ const docTemplate = `{
                     "user"
                 ],
                 "summary": "Create new user",
+                "operationId": "CreateUser",
                 "parameters": [
                     {
                         "description": "idToken",
@@ -57,15 +53,45 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/userhandler.UserDto"
+                            "$ref": "#/definitions/UserDto"
                         }
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "description": "Get user by userId",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get user by userId",
+                "operationId": "GetUserByUserId",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "userId",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
         }
     },
     "definitions": {
-        "userhandler.UserDto": {
+        "UserDto": {
             "type": "object",
             "properties": {
                 "id": {

@@ -19,7 +19,7 @@ func NewUserHandler(appCtx *app.AppContext) *UserHandler {
 	return &UserHandler{appCtx: appCtx}
 }
 
-// Create new user
+// @Id CreateUser
 // @Summary Create new user
 // @Description Create new user
 // @Tags user
@@ -29,7 +29,6 @@ func NewUserHandler(appCtx *app.AppContext) *UserHandler {
 // @Param username body string true "username"
 // @Success 200 {object} UserDto
 // @Router /user [post]
-// @Security ApiKeyAuth
 func (u *UserHandler) CreateUser() echo.HandlerFunc {
 	return func(ctx echo.Context) error {
 		// bind body from request
@@ -58,7 +57,15 @@ func (u *UserHandler) CreateUser() echo.HandlerFunc {
 	}
 }
 
-// Get user by user id
+// @Id GetUserByUserId
+// @Summary Get user by userId
+// @Description Get user by userId
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param id path string true "userId"
+// @Success 200
+// @Router /user/{id} [get]
 func (u *UserHandler) GetUserByUserId() echo.HandlerFunc {
 	return func(ctx echo.Context) error {
 		userId := ctx.Param("id")
