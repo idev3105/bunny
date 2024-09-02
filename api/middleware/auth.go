@@ -19,7 +19,7 @@ func AuthGuard(appCtx *app.AppContext) echo.MiddlewareFunc {
 			if ctx.Request().Header.Get("Authorization") == "" && appCtx.Config.Env == enum.Dev {
 				return next(ctx)
 			}
-			tokenRaw := tokenutil.GetTokenFromHeader(*ctx.Request())
+			tokenRaw := tokenutil.GetTokenFromHeader(ctx.Request())
 
 			isValid, err := tokenutil.Verify(ctx.Request().Context(), tokenRaw, appCtx.Config.JWKsUrl)
 			if err != nil || !isValid {

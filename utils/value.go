@@ -1,17 +1,21 @@
 package utils
 
-func String(v string) *string {
-	return &v
+// StringPtr returns a pointer to the given string value
+func StringPtr(s string) *string {
+	return &s
 }
 
-func Int(v int) *int {
-	return &v
+// IntPtr returns a pointer to the given int value
+func IntPtr(i int) *int {
+	return &i
 }
 
-func Int64(v int64) *int64 {
-	return &v
+// Int64Ptr returns a pointer to the given int64 value
+func Int64Ptr(i int64) *int64 {
+	return &i
 }
 
-func Uint(v uint) *uint {
-	return &v
+// UintPtr returns a pointer to the given uint value
+func UintPtr(u uint) *uint {
+	return &u
 }
