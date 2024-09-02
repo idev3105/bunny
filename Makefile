@@ -22,8 +22,10 @@ generate_openapi:
 server-dev:
 	go run . server
 
-example-consumer-dev:
-	go run . consumer example
+# Run example consumer: make consumer name=example
+.PHONY: consumer
+consumer:
+	go run . consumer $(name)
 
 # Build target
 build:
