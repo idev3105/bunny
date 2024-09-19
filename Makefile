@@ -8,10 +8,13 @@ GOGET = $(GOCMD) get
 # Init environment
 init:
 	go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
-	go install github.com/cosmtrek/air@latest
+	go install github.com/air-verse/air@latest
 	go install github.com/swaggo/swag/cmd/swag@latest
 	go install go.uber.org/nilaway/cmd/nilaway@latest
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 
+	cp ./pre-commit .git/hooks/pre-commit
+	chmod +x .git/hooks/pre-commit
 generate_sql:
 	sqlc generate
 
