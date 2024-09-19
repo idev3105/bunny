@@ -45,3 +45,6 @@ clean:
 	$(GOCLEAN)
 	rm -rf ./generated
 	rm -rf ./bin
+
+lint:
+	golangci-lint run .

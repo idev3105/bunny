@@ -14,7 +14,6 @@ import (
 // @version 1.0
 // @description This is a sample server Petstore server.
 func main() {
-
 	log := logger.New("main", "Root")
 
 	rootCmd := &cobra.Command{
